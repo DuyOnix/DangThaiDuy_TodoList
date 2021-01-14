@@ -8,20 +8,21 @@ function getEle(id) {
 
 getEle("addItem").addEventListener("click", function () {
     var taskName = getEle("newTask").value;
-    var isValid = validation.checkValid(taskName, "notiInput", "(*) Vui lòng nhập task") &&
-        validation.checkExist(taskName, "notiInput", "(*) Task đã có trong danh sách", taskList.arr);
+    var isValid = validation.checkValid(taskName, "notiInput", "(*) Task empty") &&
+        validation.checkExist(taskName, "notiInput", "(*) Task already existed", taskList.arr);
     if (!isValid) return;
     var task = new Task(taskName, "todo");
     taskList.addTask(task);
-    createTable(taskList.arr, "todo");
+    createTable(taskList.arr, "todo", "completed");
     setLocalStorage();
-
+    alert("Add Success!");
 });
 
-function createTable(arr, ulId) {
-    var content = "";
+function createTable(arr, todoId, completedId) {
+    var todoContent = "";
+    var completedContent = "";
     arr.forEach(function (item, index) {
-        content += `
+        var content = `
         <li>
             <span>${item.taskName}</span>
             <div class="buttons">
@@ -35,8 +36,13 @@ function createTable(arr, ulId) {
             </div>
         </li>
         `
+        if (item.status === "todo")
+            todoContent += content;
+        else
+            completedContent += content;
     })
-    getEle(ulId).innerHTML = content;
+    getEle(todoId).innerHTML = todoContent;
+    getEle(completedId).innerHTML = completedContent;
 }
 
 function setLocalStorage() {
@@ -47,15 +53,30 @@ function setLocalStorage() {
 function getLocalStorage() {
     if (localStorage.getItem("Task List")) {
         taskList.arr = JSON.parse(localStorage.getItem("Task List"));
-        createTable(taskList.arr, "todo");
+        createTable(taskList.arr, "todo", "completed");
     }
 }
 
 function deleteToDo(id) {
     taskList.deleteTask(id);
-    createTable(taskList.arr, "todo");
+    createTable(taskList.arr, "todo", "completed");
     setLocalStorage();
+    alert("Delete Success!");
 }
+
+function changeStatus(id) {
+    var task = taskList.getTaskById(id);
+    if (task.status === "todo")
+        task.status = "completed";
+    else
+        task.status = "todo";
+    taskList.updateTask(task);
+    createTable(taskList.arr, "todo", "completed");
+    setLocalStorage();
+    alert("Change Status Success!");
+}
+
+
 
 
 
