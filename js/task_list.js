@@ -18,9 +18,9 @@ function TaskList() {
         if (idx !== -1)
             return this.arr[idx];
     }
-    this.updateTask = function (staff) {
-        var idx = this.searchIndex(staff.id);
+    this.updateTask = function (task) {
+        var idx = this.searchIndex(task.id);
         if (idx !== -1)
-            this.arr[idx] = staff;
+            this.arr[idx] = task;
     }
 }
