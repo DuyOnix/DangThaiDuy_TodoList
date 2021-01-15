@@ -15,6 +15,8 @@ getEle("addItem").addEventListener("click", function () {
     taskList.addTask(task);
     createTable(taskList.arr);
     setLocalStorage();
+    getEle("newTask").value = "";
+    getEle("newTask").focus();
     alert("Add Success!");
 });
 
