@@ -8,17 +8,17 @@ function getEle(id) {
 
 getEle("addItem").addEventListener("click", function () {
     var taskName = getEle("newTask").value;
-    var isValid = validation.checkValid(taskName, "notiInput", "(*) Task empty") &&
+    var isValid = validation.checkInput(taskName, "notiInput", "(*) Task empty") &&
         validation.checkExist(taskName, "notiInput", "(*) Task already existed", taskList.arr);
     if (!isValid) return;
     var task = new Task(taskName, "todo");
     taskList.addTask(task);
-    createTable(taskList.arr, "todo", "completed");
+    createTable(taskList.arr);
     setLocalStorage();
     alert("Add Success!");
 });
 
-function createTable(arr, todoId, completedId) {
+function createTable(arr) {
     var todoContent = "";
     var completedContent = "";
     arr.forEach(function (item, index) {
@@ -41,8 +41,8 @@ function createTable(arr, todoId, completedId) {
         else
             completedContent += content;
     })
-    getEle(todoId).innerHTML = todoContent;
-    getEle(completedId).innerHTML = completedContent;
+    getEle("todo").innerHTML = todoContent;
+    getEle("completed").innerHTML = completedContent;
 }
 
 function setLocalStorage() {
@@ -53,13 +53,13 @@ function setLocalStorage() {
 function getLocalStorage() {
     if (localStorage.getItem("Task List")) {
         taskList.arr = JSON.parse(localStorage.getItem("Task List"));
-        createTable(taskList.arr, "todo", "completed");
+        createTable(taskList.arr);
     }
 }
 
 function deleteToDo(id) {
     taskList.deleteTask(id);
-    createTable(taskList.arr, "todo", "completed");
+    createTable(taskList.arr);
     setLocalStorage();
     alert("Delete Success!");
 }
@@ -71,7 +71,7 @@ function changeStatus(id) {
     else
         task.status = "todo";
     taskList.updateTask(task);
-    createTable(taskList.arr, "todo", "completed");
+    createTable(taskList.arr);
     setLocalStorage();
     alert("Change Status Success!");
 }

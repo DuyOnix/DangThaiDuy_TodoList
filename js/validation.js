@@ -1,5 +1,5 @@
 function Validation() {
-    this.checkValid = function (input, warnId, message) {
+    this.checkInput = function (input, warnId, message) {
         if (input !== "") {
             getEle(warnId).style.display = "none";
             getEle(warnId).innerHTML = "";
